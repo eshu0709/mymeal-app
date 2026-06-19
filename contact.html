@@ -49,7 +49,7 @@ header {
 }
 
 .logo { display: flex; align-items: center; text-decoration: none; }
-.logo img { height: 44px; width: auto; filter: brightness(0) invert(1); object-fit: contain; }
+.logo img { height: 44px; width: auto; filter: brightness(0) invert(1); mix-blend-mode: multiply; object-fit: contain; }
 
 nav { display: flex; align-items: center; gap: 4px; }
 .nav-link {
@@ -99,8 +99,6 @@ footer a:hover { text-decoration: underline; }
     }
     .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; }
     .page-hero-text p  { font-size: .92rem; opacity: .8; line-height: 1.55; }
-    .page-hero-img { width: 160px; opacity: .5; flex-shrink: 0; transform: rotate(10deg); margin-right: -20px; pointer-events: none; }
-    @media (max-width: 540px) { .page-hero-img { display: none; } }
 
     /* ── Layout ── */
     .inner {
@@ -226,7 +224,6 @@ footer a:hover { text-decoration: underline; }
       <h1>📬 Contact Us</h1>
       <p>Have a question, idea, or just want to say hello? We'd love to hear from you.</p>
     </div>
-    <img class="page-hero-img" src="images/leaves-pair.jpeg" alt="" />
   </div>
 
   <div class="inner">
@@ -243,13 +240,6 @@ footer a:hover { text-decoration: underline; }
           <div class="contact-info">
             <label>Email</label>
             <a href="mailto:eshamehtak@gmail.com">eshamehtak@gmail.com</a>
-          </div>
-        </div>
-        <div class="contact-row">
-          <div class="contact-icon">🌍</div>
-          <div class="contact-info">
-            <label>Project</label>
-            <span>MyMeal — AI Food Advisor</span>
           </div>
         </div>
         <div class="contact-row">
