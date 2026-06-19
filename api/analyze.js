@@ -77,10 +77,12 @@ Rules:
 
     const result = JSON.parse(jsonMatch[0]);
 
-    // ── Log to Google Sheets (non-blocking) ──
-    logToSheets(meal, restrictions, result).catch(err =>
-      console.error('Sheets logging failed:', err.message)
-    );
+    // ── Log to Google Sheets (awaited so Vercel doesn't cut it off) ──
+    try {
+      await logToSheets(meal, restrictions, result);
+    } catch (sheetErr) {
+      console.error('Sheets logging failed:', sheetErr.message);
+    }
 
     return res.status(200).json(result);
 
