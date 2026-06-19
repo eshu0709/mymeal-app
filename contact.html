@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyMeal — Contact Us</title>
+  <style>
+/* === shared styles === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:    #2d7a4f;
+  --green-lt: #e8f5ee;
+  --green-md: #4caf78;
+  --amber:    #e07b2a;
+  --amber-lt: #fff4e8;
+  --red:      #d94f3d;
+  --red-lt:   #fdecea;
+  --bg:       #f7f9f7;
+  --card:     #ffffff;
+  --text:     #1a2e1a;
+  --muted:    #6b7c6b;
+  --border:   #d8e8d8;
+  --radius:   14px;
+  --shadow:   0 2px 16px rgba(0,0,0,.08);
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: linear-gradient(135deg, #1a5c34 0%, #2d7a4f 60%, #3d9e66 100%);
+  color: #fff;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo img { height: 44px; width: auto; filter: brightness(0) invert(1); object-fit: contain; }
+
+nav { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  color: rgba(255,255,255,.82);
+  text-decoration: none;
+  font-size: .9rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  transition: background .15s, color .15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-link:hover  { background: rgba(255,255,255,.15); color: #fff; }
+.nav-link.active { background: rgba(255,255,255,.22); color: #fff; font-weight: 700; }
+
+main { flex: 1; }
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+  padding: 22px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+footer a { color: var(--green); text-decoration: none; font-weight: 600; }
+footer a:hover { text-decoration: underline; }
+/* === end shared === */
+
+    /* ── Page hero ── */
+    .page-hero {
+      background: linear-gradient(135deg, #0e3d22 0%, #1a5c34 55%, #2d7a4f 100%);
+      color: #fff;
+      padding: 36px 32px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      overflow: hidden;
+    }
+    .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; }
+    .page-hero-text p  { font-size: .92rem; opacity: .8; line-height: 1.55; }
+    .page-hero-img { width: 160px; opacity: .5; flex-shrink: 0; transform: rotate(10deg); margin-right: -20px; pointer-events: none; }
+    @media (max-width: 540px) { .page-hero-img { display: none; } }
+
+    /* ── Layout ── */
+    .inner {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 52px 24px 80px;
+    }
+
+    /* ── Contact card ── */
+    .contact-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .contact-card-header {
+      background: linear-gradient(135deg, #1a5c34, #2d7a4f);
+      padding: 32px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-card-header::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(110,232,154,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .avatar {
+      width: 88px; height: 88px;
+      background: rgba(255,255,255,.2);
+      border: 3px solid rgba(255,255,255,.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      margin: 0 auto 16px;
+      position: relative;
+    }
+    .contact-card-header h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; position: relative; }
+    .contact-card-header p  { font-size: .88rem; opacity: .8; position: relative; }
+
+    .contact-card-body { padding: 32px; }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .contact-icon {
+      width: 46px; height: 46px;
+      background: var(--green-lt);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .contact-info label { font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; display: block; margin-bottom: 3px; }
+    .contact-info a, .contact-info span { font-size: .97rem; font-weight: 600; color: var(--text); text-decoration: none; }
+    .contact-info a:hover { color: var(--green); text-decoration: underline; }
+
+    /* ── Email CTA button ── */
+    .email-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-md) 100%);
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(45,122,79,.35);
+      transition: opacity .2s, transform .1s, box-shadow .2s;
+      margin-top: 24px;
+    }
+    .email-btn:hover { opacity: .92; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(45,122,79,.4); text-decoration: none; color: #fff; }
+
+    /* ── Response note ── */
+    .response-note {
+      background: var(--green-lt);
+      border: 1.5px solid #b8dcc8;
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .response-note .note-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .response-note p { font-size: .88rem; color: #2a5a3a; line-height: 1.6; }
+    .response-note strong { color: var(--green); }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="intro.html">
+    <img src="images/logo.jpeg" alt="MyMeal" />
+  </a>
+  <nav>
+    <a class="nav-link" href="intro.html">🏠 Home</a>
+    <a class="nav-link" href="index.html">✨ Analyzer</a>
+    <a class="nav-link" href="feedback.html">💬 Feedback</a>
+    <a class="nav-link active" href="contact.html">📬 Contact</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <h1>📬 Contact Us</h1>
+      <p>Have a question, idea, or just want to say hello? We'd love to hear from you.</p>
+    </div>
+    <img class="page-hero-img" src="images/leaves-pair.jpeg" alt="" />
+  </div>
+
+  <div class="inner">
+
+    <div class="contact-card">
+      <div class="contact-card-header">
+        <div class="avatar">👩‍💼</div>
+        <h2>Esha Mehta</h2>
+        <p>Founder · MyMeal</p>
+      </div>
+      <div class="contact-card-body">
+        <div class="contact-row">
+          <div class="contact-icon">📧</div>
+          <div class="contact-info">
+            <label>Email</label>
+            <a href="mailto:eshamehtak@gmail.com">eshamehtak@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🌍</div>
+          <div class="contact-info">
+            <label>Project</label>
+            <span>MyMeal — AI Food Advisor</span>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">💬</div>
+          <div class="contact-info">
+            <label>Feedback form</label>
+            <a href="feedback.html">Leave feedback →</a>
+          </div>
+        </div>
+
+        <a class="email-btn" href="mailto:eshamehtak@gmail.com">
+          ✉️ Send an Email
+        </a>
+      </div>
+    </div>
+
+    <div class="response-note">
+      <span class="note-icon">⏱️</span>
+      <p><strong>Response time:</strong> We aim to reply within 1–2 business days. For general feedback or feature requests, you can also use the <a href="feedback.html" style="color:var(--green);font-weight:600;">feedback form</a>.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <span>© MyMeal · AI Food Advisor · For informational purposes only</span>
+  <a href="index.html">✨ Analyzer</a>
+  <a href="feedback.html">💬 Feedback</a>
+  <a href="contact.html">📬 Contact</a>
+</footer>
+
+</body>
+</html>
