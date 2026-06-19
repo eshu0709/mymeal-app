@@ -130,6 +130,12 @@ footer a:hover { text-decoration: underline; }
 /* === end shared === */
 </style>
   <style>
+    /* Icon system */
+    .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+    .icon-lg { width: 28px; height: 28px; }
+    .icon-xl { width: 40px; height: 40px; }
+    .icon-sm { width: 16px; height: 16px; }
+
     /* (API key banner removed — key lives in Vercel env vars) */
 
     textarea {
@@ -173,7 +179,7 @@ footer a:hover { text-decoration: underline; }
       border-top: 1.5px solid var(--border);
       padding-top: 18px;
     }
-    .diet-label { font-size: .88rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .diet-label { font-size: .88rem; font-weight: 700; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
     .diet-optional { font-weight: 400; color: var(--muted); font-size: .82rem; }
     .diet-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
     .diet-tag {
@@ -307,7 +313,7 @@ footer a:hover { text-decoration: underline; }
 
     /* Scores */
     .score-section { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 4px; }
-    .score-section h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+    .score-section h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
     .score-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
     .score-label { font-size: .85rem; width: 120px; flex-shrink: 0; color: var(--muted); }
     .score-bar-wrap { flex: 1; background: var(--bg); border-radius: 99px; height: 10px; overflow: hidden; }
@@ -326,7 +332,7 @@ footer a:hover { text-decoration: underline; }
       overflow: hidden;
       position: relative;
     }
-    .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; }
+    .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; display: flex; align-items: center; gap: 10px; }
     .page-hero-text p  { font-size: .92rem; opacity: .8; max-width: 440px; line-height: 1.55; }
   </style>
 </head>
@@ -337,10 +343,10 @@ footer a:hover { text-decoration: underline; }
     <img src="images/logo.jpeg" alt="MyMeal" />
   </a>
   <nav>
-    <a class="nav-link" href="intro.html">🏠 Home</a>
-    <a class="nav-link active" href="index.html">✨ Analyzer</a>
-    <a class="nav-link" href="feedback.html">💬 Feedback</a>
-    <a class="nav-link" href="contact.html">📬 Contact</a>
+    <a class="nav-link" href="intro.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
+    <a class="nav-link active" href="index.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg> Analyzer</a>
+    <a class="nav-link" href="feedback.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Feedback</a>
+    <a class="nav-link" href="contact.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Contact</a>
   </nav>
 </header>
 
@@ -348,7 +354,7 @@ footer a:hover { text-decoration: underline; }
   <!-- Page hero banner -->
   <div class="page-hero">
     <div class="page-hero-text">
-      <h1>🥗 Meal Analyzer</h1>
+      <h1><svg class="icon" style="width:28px;height:28px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg> Meal Analyzer</h1>
       <p>Describe your meal and get AI-powered nutritional analysis with healthier addition suggestions.</p>
     </div>
   </div>
@@ -357,7 +363,7 @@ footer a:hover { text-decoration: underline; }
   <!-- API Key Section -->
   <!-- Input Card -->
   <div class="card">
-    <h2>🍽️ What are you eating?</h2>
+    <h2><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg> What are you eating?</h2>
     <textarea id="meal-input" placeholder="Describe your current meal — e.g. &quot;cheeseburger, large fries, and a regular cola&quot;" rows="3"></textarea>
 
     <div class="examples">
@@ -371,31 +377,30 @@ footer a:hover { text-decoration: underline; }
     </div>
 
     <div class="diet-section">
-      <div class="diet-label">🚫 Dietary Restrictions <span class="diet-optional">(optional)</span></div>
+      <div class="diet-label"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" x2="19.07" y1="4.93" y2="19.07"/></svg> Dietary Restrictions <span class="diet-optional">(optional)</span></div>
       <div class="diet-tags" id="diet-tags">
-        <button class="diet-tag" data-diet="vegetarian">🥦 Vegetarian</button>
-        <button class="diet-tag" data-diet="vegan">🌱 Vegan</button>
-        <button class="diet-tag" data-diet="gluten-free">🌾 Gluten-Free</button>
-        <button class="diet-tag" data-diet="dairy-free">🥛 Dairy-Free</button>
-        <button class="diet-tag" data-diet="nut-free">🥜 Nut-Free</button>
-        <button class="diet-tag" data-diet="halal">☪️ Halal</button>
-        <button class="diet-tag" data-diet="kosher">✡️ Kosher</button>
-        <button class="diet-tag" data-diet="low-sodium">🧂 Low Sodium</button>
-        <button class="diet-tag" data-diet="keto">🥑 Keto</button>
-        <button class="diet-tag" data-diet="low-carb">🍞 Low Carb</button>
+        <button class="diet-tag" data-diet="vegetarian">Vegetarian</button>
+        <button class="diet-tag" data-diet="vegan">Vegan</button>
+        <button class="diet-tag" data-diet="gluten-free">Gluten-Free</button>
+        <button class="diet-tag" data-diet="dairy-free">Dairy-Free</button>
+        <button class="diet-tag" data-diet="nut-free">Nut-Free</button>
+        <button class="diet-tag" data-diet="halal">Halal</button>
+        <button class="diet-tag" data-diet="kosher">Kosher</button>
+        <button class="diet-tag" data-diet="low-sodium">Low Sodium</button>
+        <button class="diet-tag" data-diet="keto">Keto</button>
+        <button class="diet-tag" data-diet="low-carb">Low Carb</button>
       </div>
       <input id="diet-custom" type="text" placeholder="Other restrictions — e.g. shellfish allergy, diabetic, lactose intolerant…" />
     </div>
 
     <button class="analyze-btn" id="analyze-btn" onclick="analyzeMeal()">
-      <span id="btn-icon">✨</span>
       <span id="btn-text">Analyze My Meal</span>
     </button>
   </div>
 
   <!-- Error -->
   <div class="error-box" id="error-box">
-    <span>⚠️</span>
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg>
     <span id="error-msg">Something went wrong.</span>
   </div>
 
@@ -408,22 +413,22 @@ footer a:hover { text-decoration: underline; }
   <!-- Results -->
   <div id="results">
     <div class="meal-header">
-      <span>🍽️</span>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
       <span>Analyzing: <em id="meal-display"></em></span>
     </div>
 
     <div class="problems-card">
-      <h3>⚠️ Nutritional Concerns</h3>
+      <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg> Nutritional Concerns</h3>
       <div id="problems-list"></div>
     </div>
 
     <div class="card" style="margin-bottom:22px">
-      <div class="additions-title">🌿 Healthier Additions to Balance Your Meal</div>
+      <div class="additions-title"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg> Healthier Additions to Balance Your Meal</div>
       <div class="additions-grid" id="additions-grid"></div>
     </div>
 
     <div class="score-section">
-      <h3>📊 Nutritional Balance (before → after additions)</h3>
+      <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg> Nutritional Balance (before → after additions)</h3>
       <div id="scores-container"></div>
     </div>
   </div>
@@ -432,7 +437,7 @@ footer a:hover { text-decoration: underline; }
 
 <footer>
   <span>Powered by OpenAI · For informational purposes only</span>
-  <a href="feedback.html">💬 Share Feedback</a>
+  <a href="feedback.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Share Feedback</a>
 </footer>
 
 <script>
@@ -455,10 +460,11 @@ footer a:hover { text-decoration: underline; }
 
   function showError(msg) {
     document.getElementById('error-msg').textContent = msg;
-    document.getElementById('error-box').classList.add('visible');
+    const box = document.getElementById('error-box');
+    box.style.display = 'flex';
   }
   function hideError() {
-    document.getElementById('error-box').classList.remove('visible');
+    document.getElementById('error-box').style.display = 'none';
   }
 
   async function analyzeMeal() {
@@ -471,7 +477,6 @@ footer a:hover { text-decoration: underline; }
     const btn = document.getElementById('analyze-btn');
     btn.disabled = true;
     document.getElementById('btn-text').textContent = 'Analyzing…';
-    document.getElementById('btn-icon').textContent = '⏳';
     document.getElementById('loader').classList.add('visible');
     document.getElementById('results').classList.remove('visible');
 
@@ -495,7 +500,6 @@ footer a:hover { text-decoration: underline; }
     } finally {
       btn.disabled = false;
       document.getElementById('btn-text').textContent = 'Analyze My Meal';
-      document.getElementById('btn-icon').textContent = '✨';
       document.getElementById('loader').classList.remove('visible');
     }
   }
@@ -508,7 +512,7 @@ footer a:hover { text-decoration: underline; }
     (restrictions || []).forEach(r => {
       const badge = document.createElement('span');
       badge.className = 'diet-badge';
-      badge.textContent = '🚫 ' + r;
+      badge.textContent = r;
       mealHeader.appendChild(badge);
     });
 

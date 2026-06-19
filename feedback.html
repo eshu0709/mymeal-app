@@ -130,16 +130,24 @@ footer a:hover { text-decoration: underline; }
 /* === end shared === */
 </style>
   <style>
+    /* Icon system */
+    .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+    .icon-lg { width: 28px; height: 28px; }
+    .icon-xl { width: 40px; height: 40px; }
+    .icon-sm { width: 16px; height: 16px; }
+
     main { max-width: 760px; }
 
     .feedback-hero {
       text-align: center;
       padding: 48px 24px 36px;
     }
-    .feedback-hero .icon {
-      font-size: 3.2rem;
-      display: block;
+    .feedback-hero .hero-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 16px;
+      color: var(--green);
     }
     .feedback-hero h1 {
       font-size: 1.9rem;
@@ -169,7 +177,7 @@ footer a:hover { text-decoration: underline; }
       text-align: center;
       box-shadow: var(--shadow);
     }
-    .why-card .why-icon { font-size: 2rem; display: block; margin-bottom: 10px; }
+    .why-card .why-icon { display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: var(--green); }
     .why-card h3 { font-size: .9rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
     .why-card p  { font-size: .82rem; color: var(--muted); line-height: 1.45; }
 
@@ -215,15 +223,15 @@ footer a:hover { text-decoration: underline; }
       gap: 24px;
       overflow: hidden;
     }
-    .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; }
+    .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; display: flex; align-items: center; gap: 10px; }
     .page-hero-text p  { font-size: .92rem; opacity: .8; line-height: 1.55; }
     .page-hero-img { width: 160px; opacity: .5; flex-shrink: 0; transform: rotate(-10deg); margin-right: -20px; pointer-events: none; }
     @media (max-width: 540px) { .page-hero-img { display: none; } }
 
-    .feedback-hero { text-align: center; padding: 40px 24px 28px; }
-    .feedback-hero .icon { font-size: 2.8rem; display: block; margin-bottom: 14px; }
-    .feedback-hero h2 { font-size: 1.5rem; font-weight: 800; color: var(--green); margin-bottom: 8px; }
-    .feedback-hero p  { font-size: .97rem; color: var(--muted); max-width: 460px; margin: 0 auto; line-height: 1.6; }
+    .sub-hero { text-align: center; padding: 40px 24px 28px; }
+    .sub-hero .sub-hero-icon { display: flex; align-items: center; justify-content: center; margin-bottom: 14px; color: var(--green); }
+    .sub-hero h2 { font-size: 1.5rem; font-weight: 800; color: var(--green); margin-bottom: 8px; }
+    .sub-hero p  { font-size: .97rem; color: var(--muted); max-width: 460px; margin: 0 auto; line-height: 1.6; }
 
     .fallback-note { text-align: center; margin-bottom: 32px; font-size: .88rem; color: var(--muted); }
   </style>
@@ -235,10 +243,10 @@ footer a:hover { text-decoration: underline; }
     <img src="images/logo.jpeg" alt="MyMeal" />
   </a>
   <nav>
-    <a class="nav-link" href="intro.html">🏠 Home</a>
-    <a class="nav-link" href="index.html">✨ Analyzer</a>
-    <a class="nav-link active" href="feedback.html">💬 Feedback</a>
-    <a class="nav-link" href="contact.html">📬 Contact</a>
+    <a class="nav-link" href="intro.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
+    <a class="nav-link" href="index.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg> Analyzer</a>
+    <a class="nav-link active" href="feedback.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Feedback</a>
+    <a class="nav-link" href="contact.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Contact</a>
   </nav>
 </header>
 
@@ -246,15 +254,15 @@ footer a:hover { text-decoration: underline; }
   <!-- Page hero banner -->
   <div class="page-hero">
     <div class="page-hero-text">
-      <h1>💬 Share Your Feedback</h1>
+      <h1><svg class="icon" style="width:26px;height:26px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Share Your Feedback</h1>
       <p>Help us make MyMeal better — tell us what you love, what's missing, or how we can improve.</p>
     </div>
     <img class="page-hero-img" src="images/leaves-pair.jpeg" alt="" />
   </div>
 
   <!-- Sub-hero -->
-  <div class="feedback-hero">
-    <span class="icon">🙏</span>
+  <div class="sub-hero">
+    <div class="sub-hero-icon"><svg class="icon icon-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
     <h2>Your feedback shapes MyMeal</h2>
     <p>Every response helps us improve the AI recommendations, add features you need, and fix things that aren't working.</p>
   </div>
@@ -262,17 +270,17 @@ footer a:hover { text-decoration: underline; }
   <!-- Why your feedback matters -->
   <div class="why-cards">
     <div class="why-card">
-      <span class="why-icon">🎯</span>
+      <div class="why-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
       <h3>Improve Accuracy</h3>
       <p>Your input helps us fine-tune AI recommendations to be more precise and relevant.</p>
     </div>
     <div class="why-card">
-      <span class="why-icon">🌱</span>
+      <div class="why-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg></div>
       <h3>New Features</h3>
       <p>Suggest features you'd like to see — your ideas shape the product roadmap.</p>
     </div>
     <div class="why-card">
-      <span class="why-icon">🐛</span>
+      <div class="why-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg></div>
       <h3>Report Issues</h3>
       <p>Found something broken or a recommendation that seemed off? Let us know.</p>
     </div>
@@ -299,7 +307,7 @@ footer a:hover { text-decoration: underline; }
 
 <footer>
   <span>© MyMeal · AI Food Advisor</span>
-  <a href="index.html">🏠 Back to Home</a>
+  <a href="index.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Back to Home</a>
 </footer>
 
 </body>

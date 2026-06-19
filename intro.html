@@ -133,6 +133,12 @@ footer a:hover { text-decoration: underline; }
     main { max-width: 100%; padding: 0; }
     .inner { max-width: 940px; margin: 0 auto; padding: 0 24px; }
 
+    /* Icon system */
+    .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+    .icon-lg { width: 28px; height: 28px; }
+    .icon-xl { width: 40px; height: 40px; }
+    .icon-sm { width: 16px; height: 16px; }
+
     /* ════════════════════════════
        HERO
     ════════════════════════════ */
@@ -250,7 +256,7 @@ footer a:hover { text-decoration: underline; }
       padding: 26px 24px;
     }
     .problem-strip .inner { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-    .problem-strip .pill-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .problem-strip .pill-icon { flex-shrink: 0; color: var(--amber); }
     .problem-strip p { font-size: .95rem; color: #7a4a10; line-height: 1.6; }
     .problem-strip strong { color: #5a3008; }
 
@@ -303,7 +309,7 @@ footer a:hover { text-decoration: underline; }
       margin: 0 auto 14px;
       box-shadow: 0 3px 10px rgba(45,122,79,.35);
     }
-    .step-icon { font-size: 2.2rem; display: block; margin-bottom: 12px; }
+    .step-icon { display: flex; align-items: center; justify-content: center; margin-bottom: 12px; color: var(--green); }
     .step h3 { font-size: .97rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
     .step p   { font-size: .85rem; color: var(--muted); line-height: 1.55; }
 
@@ -403,7 +409,6 @@ footer a:hover { text-decoration: underline; }
     }
     .feature-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
     .feature-icon {
-      font-size: 1.7rem;
       width: 50px; height: 50px;
       background: var(--green-lt);
       border-radius: 12px;
@@ -521,10 +526,10 @@ footer a:hover { text-decoration: underline; }
     <img src="images/logo.jpeg" alt="MyMeal" />
   </a>
   <nav>
-    <a class="nav-link active" href="intro.html">🏠 Home</a>
-    <a class="nav-link" href="index.html">✨ Analyzer</a>
-    <a class="nav-link" href="feedback.html">💬 Feedback</a>
-    <a class="nav-link" href="contact.html">📬 Contact</a>
+    <a class="nav-link active" href="intro.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
+    <a class="nav-link" href="index.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg> Analyzer</a>
+    <a class="nav-link" href="feedback.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Feedback</a>
+    <a class="nav-link" href="contact.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Contact</a>
   </nav>
 </header>
 
@@ -532,10 +537,10 @@ footer a:hover { text-decoration: underline; }
 
   <!-- ══ HERO ══ -->
   <section class="hero">
-    <div class="hero-badge">✨ AI-Powered Nutrition Advice</div>
+    <div class="hero-badge"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg> AI-Powered Nutrition Advice</div>
     <h1>Eat better,<br><span>not less.</span></h1>
     <p>Tell us what's on your plate. We'll spot the nutritional gaps and suggest simple, realistic additions — without asking you to give up the foods you love.</p>
-    <a class="hero-cta" href="index.html">🥗 Analyze My Meal</a>
+    <a class="hero-cta" href="index.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg> Analyze My Meal</a>
     <span class="hero-cta-sub">Free · No account needed · Results in seconds</span>
 
     <div class="hero-photos">
@@ -554,7 +559,7 @@ footer a:hover { text-decoration: underline; }
   <!-- ══ PROBLEM STRIP ══ -->
   <div class="problem-strip">
     <div class="inner">
-      <span class="pill-icon">💡</span>
+      <span class="pill-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span>
       <p><strong>Most healthy eating advice tells you what NOT to eat.</strong> We take a different approach — we help you build on what you already enjoy by identifying nutritional gaps and filling them with simple additions.</p>
     </div>
   </div>
@@ -570,19 +575,19 @@ footer a:hover { text-decoration: underline; }
       <div class="steps">
         <div class="step">
           <div class="step-num">1</div>
-          <span class="step-icon">🍽️</span>
+          <div class="step-icon"><svg class="icon icon-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--green)"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></div>
           <h3>Describe your meal</h3>
           <p>Type what you're eating — as simple as "burger and fries" or as detailed as you like. Optionally add dietary restrictions.</p>
         </div>
         <div class="step">
           <div class="step-num">2</div>
-          <span class="step-icon">🤖</span>
+          <div class="step-icon"><svg class="icon icon-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--green)"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></svg></div>
           <h3>AI analyzes it</h3>
           <p>Our AI nutritionist identifies the nutritional gaps — excess sodium, missing fiber, lack of vitamins, and more.</p>
         </div>
         <div class="step">
           <div class="step-num">3</div>
-          <span class="step-icon">🌿</span>
+          <div class="step-icon"><svg class="icon icon-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--green)"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
           <h3>Get smart additions</h3>
           <p>Receive 3–4 realistic, specific foods to add alongside your meal to create a healthier, more balanced plate.</p>
         </div>
@@ -599,7 +604,7 @@ footer a:hover { text-decoration: underline; }
       <img class="split-leaf" src="images/leaves-pair.jpeg" alt="" />
       <h2>Your meal,<br>just a little better.</h2>
       <p>We don't tell you to swap your burger for a salad. We suggest adding a handful of spinach, a side of cherry tomatoes, or a glass of water — small, achievable changes that actually make a difference.</p>
-      <a class="split-cta" href="index.html">✨ Try it now</a>
+      <a class="split-cta" href="index.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> Try it now</a>
     </div>
   </div>
 
@@ -613,42 +618,42 @@ footer a:hover { text-decoration: underline; }
 
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">⚠️</div>
+          <div class="feature-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--green)"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg></div>
           <div>
             <h3>Nutritional concern detection</h3>
             <p>See exactly what's off about your meal — too much sodium, saturated fat, refined carbs, or missing key nutrients.</p>
           </div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🌿</div>
+          <div class="feature-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--green)"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
           <div>
             <h3>Personalized food additions</h3>
             <p>Get 3–4 specific, real foods with portion sizes, reasons, and key nutrients listed. No vague advice, no supplements.</p>
           </div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🚫</div>
+          <div class="feature-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--green)"><circle cx="12" cy="12" r="10"/><line x1="4.93" x2="19.07" y1="4.93" y2="19.07"/></svg></div>
           <div>
             <h3>Dietary restriction support</h3>
             <p>Vegan, gluten-free, keto, halal, nut-free, and more — every suggestion strictly respects your restrictions.</p>
           </div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">📊</div>
+          <div class="feature-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--green)"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg></div>
           <div>
             <h3>Before &amp; after nutrition score</h3>
             <p>Animated bars show how additions improve your meal's fiber, protein, vitamins, and overall balance.</p>
           </div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">⚡</div>
+          <div class="feature-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--green)"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
           <div>
             <h3>Instant results</h3>
             <p>Powered by GPT-4o — full analysis in seconds. No account, no sign-up, no waiting.</p>
           </div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🔒</div>
+          <div class="feature-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--green)"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
           <div>
             <h3>Private &amp; secure</h3>
             <p>Your API key and meal data live only in your browser. Nothing is sent to or stored on any third-party server.</p>
@@ -679,7 +684,7 @@ footer a:hover { text-decoration: underline; }
             <div class="preview-concern-row"><span>🌾</span><span><strong>Almost no fiber</strong> — refined bun and fried potatoes contribute little dietary fiber.</span></div>
             <div class="preview-concern-row"><span>🥦</span><span><strong>Missing vegetables</strong> — very low in vitamins A, C, and K.</span></div>
           </div>
-          <div style="font-size:.85rem;font-weight:700;color:var(--green);margin-bottom:10px;">🌿 Suggested additions</div>
+          <div style="font-size:.85rem;font-weight:700;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg> Suggested additions</div>
           <div class="preview-additions">
             <div class="preview-add-pill"><span>🥗</span> Side salad</div>
             <div class="preview-add-pill"><span>🍅</span> Sliced tomatoes</div>
@@ -698,7 +703,7 @@ footer a:hover { text-decoration: underline; }
     <div class="inner">
       <h2>Ready to eat a little better today?</h2>
       <p>It takes 30 seconds. Just describe your meal and let AI do the rest.</p>
-      <a class="cta-btn" href="index.html">✨ Analyze My Meal — Free</a>
+      <a class="cta-btn" href="index.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg> Analyze My Meal — Free</a>
     </div>
   </section>
 
@@ -706,9 +711,9 @@ footer a:hover { text-decoration: underline; }
 
 <footer>
   <span>© MyMeal · AI Food Advisor · For informational purposes only</span>
-  <a href="index.html">✨ Analyzer</a>
-  <a href="feedback.html">💬 Feedback</a>
-  <a href="contact.html">📬 Contact</a>
+  <a href="index.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg> Analyzer</a>
+  <a href="feedback.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Feedback</a>
+  <a href="contact.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Contact</a>
 </footer>
 
 </body>

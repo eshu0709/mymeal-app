@@ -86,6 +86,12 @@ footer a { color: var(--green); text-decoration: none; font-weight: 600; }
 footer a:hover { text-decoration: underline; }
 /* === end shared === */
 
+    /* Icon system */
+    .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+    .icon-lg { width: 28px; height: 28px; }
+    .icon-xl { width: 40px; height: 40px; }
+    .icon-sm { width: 16px; height: 16px; }
+
     /* ── Page hero ── */
     .page-hero {
       background: linear-gradient(135deg, #0e3d22 0%, #1a5c34 55%, #2d7a4f 100%);
@@ -97,7 +103,7 @@ footer a:hover { text-decoration: underline; }
       gap: 24px;
       overflow: hidden;
     }
-    .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; }
+    .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; display: flex; align-items: center; gap: 10px; }
     .page-hero-text p  { font-size: .92rem; opacity: .8; line-height: 1.55; }
 
     /* ── Layout ── */
@@ -138,7 +144,6 @@ footer a:hover { text-decoration: underline; }
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.4rem;
       margin: 0 auto 16px;
       position: relative;
     }
@@ -162,7 +167,6 @@ footer a:hover { text-decoration: underline; }
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
       flex-shrink: 0;
     }
     .contact-info label { font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; display: block; margin-bottom: 3px; }
@@ -199,7 +203,7 @@ footer a:hover { text-decoration: underline; }
       gap: 14px;
       align-items: flex-start;
     }
-    .response-note .note-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .response-note .note-icon { flex-shrink: 0; color: var(--green); padding-top: 2px; }
     .response-note p { font-size: .88rem; color: #2a5a3a; line-height: 1.6; }
     .response-note strong { color: var(--green); }
   </style>
@@ -211,17 +215,17 @@ footer a:hover { text-decoration: underline; }
     <img src="images/logo.jpeg" alt="MyMeal" />
   </a>
   <nav>
-    <a class="nav-link" href="intro.html">🏠 Home</a>
-    <a class="nav-link" href="index.html">✨ Analyzer</a>
-    <a class="nav-link" href="feedback.html">💬 Feedback</a>
-    <a class="nav-link active" href="contact.html">📬 Contact</a>
+    <a class="nav-link" href="intro.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Home</a>
+    <a class="nav-link" href="index.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg> Analyzer</a>
+    <a class="nav-link" href="feedback.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Feedback</a>
+    <a class="nav-link active" href="contact.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Contact</a>
   </nav>
 </header>
 
 <main>
   <div class="page-hero">
     <div class="page-hero-text">
-      <h1>📬 Contact Us</h1>
+      <h1><svg class="icon" style="width:26px;height:26px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Contact Us</h1>
       <p>Have a question, idea, or just want to say hello? We'd love to hear from you.</p>
     </div>
   </div>
@@ -230,20 +234,20 @@ footer a:hover { text-decoration: underline; }
 
     <div class="contact-card">
       <div class="contact-card-header">
-        <div class="avatar">👩‍💼</div>
+        <div class="avatar"><svg class="icon icon-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: white"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
         <h2>Esha Mehta</h2>
         <p>Founder · MyMeal</p>
       </div>
       <div class="contact-card-body">
         <div class="contact-row">
-          <div class="contact-icon">📧</div>
+          <div class="contact-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--green)"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
           <div class="contact-info">
             <label>Email</label>
             <a href="mailto:eshamehtak@gmail.com">eshamehtak@gmail.com</a>
           </div>
         </div>
         <div class="contact-row">
-          <div class="contact-icon">💬</div>
+          <div class="contact-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--green)"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
           <div class="contact-info">
             <label>Feedback form</label>
             <a href="feedback.html">Leave feedback →</a>
@@ -251,13 +255,13 @@ footer a:hover { text-decoration: underline; }
         </div>
 
         <a class="email-btn" href="mailto:eshamehtak@gmail.com">
-          ✉️ Send an Email
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg> Send an Email
         </a>
       </div>
     </div>
 
     <div class="response-note">
-      <span class="note-icon">⏱️</span>
+      <span class="note-icon"><svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
       <p><strong>Response time:</strong> We aim to reply within 1–2 business days. For general feedback or feature requests, you can also use the <a href="feedback.html" style="color:var(--green);font-weight:600;">feedback form</a>.</p>
     </div>
 
@@ -266,9 +270,9 @@ footer a:hover { text-decoration: underline; }
 
 <footer>
   <span>© MyMeal · AI Food Advisor · For informational purposes only</span>
-  <a href="index.html">✨ Analyzer</a>
-  <a href="feedback.html">💬 Feedback</a>
-  <a href="contact.html">📬 Contact</a>
+  <a href="index.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg> Analyzer</a>
+  <a href="feedback.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Feedback</a>
+  <a href="contact.html"><svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> Contact</a>
 </footer>
 
 </body>
