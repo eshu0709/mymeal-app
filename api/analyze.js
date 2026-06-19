@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  // Only allow POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -49,6 +48,7 @@ Rules:
 - Return ONLY the JSON object, no other text`;
 
   try {
+    // ── Call OpenAI ──
     const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -76,9 +76,78 @@ Rules:
     }
 
     const result = JSON.parse(jsonMatch[0]);
+
+    // ── Log to Google Sheets (fire-and-forget — never blocks the response) ──
+    logToSheets(meal, restrictions, result).catch(() => {});
+
     return res.status(200).json(result);
 
   } catch (err) {
     return res.status(500).json({ error: err.message || 'Internal server error' });
   }
+}
+
+// ── Google Sheets logger ──
+async function logToSheets(meal, restrictions, result) {
+  const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+  const sheetId = process.env.GOOGLE_SHEET_ID;
+
+  // Get a Google OAuth access token using the service account
+  const token = await getGoogleToken(credentials);
+
+  const timestamp = new Date().toISOString();
+  const restrictionsStr = Array.isArray(restrictions) && restrictions.length > 0
+    ? restrictions.join(', ')
+    : 'None';
+  const problemsStr = (result.problems || []).map(p => p.title).join('; ');
+  const additionsStr = (result.additions || []).map(a => a.name).join('; ');
+  const scoresBefore = JSON.stringify(result.scores?.before || {});
+  const scoresAfter  = JSON.stringify(result.scores?.after  || {});
+
+  const row = [timestamp, meal, restrictionsStr, problemsStr, additionsStr, scoresBefore, scoresAfter];
+
+  await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:G1:append?valueInputOption=USER_ENTERED`,
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ values: [row] })
+    }
+  );
+}
+
+// ── Minimal Google service account JWT auth ──
+async function getGoogleToken(credentials) {
+  const now = Math.floor(Date.now() / 1000);
+  const header = { alg: 'RS256', typ: 'JWT' };
+  const payload = {
+    iss: credentials.client_email,
+    scope: 'https://www.googleapis.com/auth/spreadsheets',
+    aud: 'https://oauth2.googleapis.com/token',
+    iat: now,
+    exp: now + 3600
+  };
+
+  const encode = obj => Buffer.from(JSON.stringify(obj)).toString('base64url');
+  const unsigned = `${encode(header)}.${encode(payload)}`;
+
+  // Sign with RS256 using the private key
+  const { createSign } = await import('crypto');
+  const sign = createSign('RSA-SHA256');
+  sign.update(unsigned);
+  const signature = sign.sign(credentials.private_key, 'base64url');
+  const jwt = `${unsigned}.${signature}`;
+
+  // Exchange JWT for access token
+  const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`
+  });
+
+  const tokenData = await tokenRes.json();
+  return tokenData.access_token;
 }
