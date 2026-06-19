@@ -77,14 +77,10 @@ Rules:
 
     const result = JSON.parse(jsonMatch[0]);
 
-    // ── Log to Google Sheets — await it so errors surface in Vercel logs ──
-    try {
-      await logToSheets(meal, restrictions, result);
-      console.log('✅ Logged to Google Sheets successfully');
-    } catch (sheetErr) {
-      // Log the full error but don't fail the response
-      console.error('❌ Google Sheets logging failed:', sheetErr.message, sheetErr.stack);
-    }
+    // ── Log to Google Sheets (non-blocking) ──
+    logToSheets(meal, restrictions, result).catch(err =>
+      console.error('Sheets logging failed:', err.message)
+    );
 
     return res.status(200).json(result);
 
@@ -95,28 +91,20 @@ Rules:
 
 // ── Google Sheets logger ──
 async function logToSheets(meal, restrictions, result) {
-  const rawCreds = process.env.GOOGLE_SERVICE_ACCOUNT;
-  const sheetId  = process.env.GOOGLE_SHEET_ID;
-
-  if (!rawCreds) throw new Error('GOOGLE_SERVICE_ACCOUNT env var is missing');
-  if (!sheetId)  throw new Error('GOOGLE_SHEET_ID env var is missing');
-
-  const credentials = JSON.parse(rawCreds);
-  console.log('🔑 Using service account:', credentials.client_email);
+  const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+  const sheetId     = process.env.GOOGLE_SHEET_ID;
 
   const token = await getGoogleToken(credentials);
-  console.log('🎟️ Got access token:', token ? 'yes' : 'no');
 
-  const timestamp    = new Date().toISOString();
-  const restrictionsStr = Array.isArray(restrictions) && restrictions.length > 0
-    ? restrictions.join(', ') : 'None';
-  const problemsStr  = (result.problems  || []).map(p => p.title).join('; ');
-  const additionsStr = (result.additions || []).map(a => a.name).join('; ');
-  const scoresBefore = JSON.stringify(result.scores?.before || {});
-  const scoresAfter  = JSON.stringify(result.scores?.after  || {});
-
-  const row = [timestamp, meal, restrictionsStr, problemsStr, additionsStr, scoresBefore, scoresAfter];
-  console.log('📝 Row to append:', row);
+  const row = [
+    new Date().toISOString(),
+    meal,
+    Array.isArray(restrictions) && restrictions.length > 0 ? restrictions.join(', ') : 'None',
+    (result.problems  || []).map(p => p.title).join('; '),
+    (result.additions || []).map(a => a.name).join('; '),
+    JSON.stringify(result.scores?.before || {}),
+    JSON.stringify(result.scores?.after  || {})
+  ];
 
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A:G:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
 
@@ -129,11 +117,9 @@ async function logToSheets(meal, restrictions, result) {
     body: JSON.stringify({ values: [row] })
   });
 
-  const sheetData = await sheetRes.json();
-  console.log('📊 Sheets API response:', JSON.stringify(sheetData));
-
   if (!sheetRes.ok) {
-    throw new Error(`Sheets API error ${sheetRes.status}: ${JSON.stringify(sheetData)}`);
+    const err = await sheetRes.json().catch(() => ({}));
+    throw new Error(`Sheets API ${sheetRes.status}: ${JSON.stringify(err)}`);
   }
 }
 
@@ -141,23 +127,19 @@ async function logToSheets(meal, restrictions, result) {
 async function getGoogleToken(credentials) {
   const now = Math.floor(Date.now() / 1000);
 
-  const header  = { alg: 'RS256', typ: 'JWT' };
-  const payload = {
+  const encode = obj => Buffer.from(JSON.stringify(obj)).toString('base64url');
+  const unsigned = `${encode({ alg: 'RS256', typ: 'JWT' })}.${encode({
     iss:   credentials.client_email,
     scope: 'https://www.googleapis.com/auth/spreadsheets',
     aud:   'https://oauth2.googleapis.com/token',
     iat:   now,
     exp:   now + 3600
-  };
-
-  const encode = obj => Buffer.from(JSON.stringify(obj)).toString('base64url');
-  const unsigned = `${encode(header)}.${encode(payload)}`;
+  })}`;
 
   const { createSign } = await import('crypto');
   const sign = createSign('RSA-SHA256');
   sign.update(unsigned);
-  const signature = sign.sign(credentials.private_key, 'base64url');
-  const jwt = `${unsigned}.${signature}`;
+  const jwt = `${unsigned}.${sign.sign(credentials.private_key, 'base64url')}`;
 
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
@@ -166,11 +148,8 @@ async function getGoogleToken(credentials) {
   });
 
   const tokenData = await tokenRes.json();
-  console.log('🔐 Token response:', JSON.stringify({ ...tokenData, access_token: tokenData.access_token ? '[REDACTED]' : 'MISSING' }));
-
   if (!tokenData.access_token) {
-    throw new Error(`Failed to get access token: ${JSON.stringify(tokenData)}`);
+    throw new Error(`Token error: ${JSON.stringify(tokenData)}`);
   }
-
   return tokenData.access_token;
 }
