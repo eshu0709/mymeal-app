@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyMeal — Eat Better, Not Less</title>
+  <style>
+/* === shared styles === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:    #2d7a4f;
+  --green-lt: #e8f5ee;
+  --green-md: #4caf78;
+  --amber:    #e07b2a;
+  --amber-lt: #fff4e8;
+  --red:      #d94f3d;
+  --red-lt:   #fdecea;
+  --bg:       #f7f9f7;
+  --card:     #ffffff;
+  --text:     #1a2e1a;
+  --muted:    #6b7c6b;
+  --border:   #d8e8d8;
+  --radius:   14px;
+  --shadow:   0 2px 16px rgba(0,0,0,.08);
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, #1a5c34 0%, #2d7a4f 60%, #3d9e66 100%);
+  color: #fff;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.logo img {
+  height: 44px;
+  width: auto;
+  /* the logo has a white background — blend it into the green header */
+  mix-blend-mode: multiply;
+  filter: brightness(0) invert(1);
+  object-fit: contain;
+}
+/* fallback text shown only if image fails */
+.logo-icon { display: none; }
+.logo-sub  { display: none; }
+
+/* ── Nav ── */
+nav { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  color: rgba(255,255,255,.82);
+  text-decoration: none;
+  font-size: .9rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  transition: background .15s, color .15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-link:hover  { background: rgba(255,255,255,.15); color: #fff; }
+.nav-link.active { background: rgba(255,255,255,.22); color: #fff; font-weight: 700; }
+
+/* ── Layout ── */
+main {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  flex: 1;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  margin-bottom: 28px;
+}
+.card h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+  padding: 22px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+footer a { color: var(--green); text-decoration: none; font-weight: 600; }
+footer a:hover { text-decoration: underline; }
+
+/* === end shared === */
+</style>
+  <style>
+    main { max-width: 100%; padding: 0; }
+    .inner { max-width: 940px; margin: 0 auto; padding: 0 24px; }
+
+    /* ════════════════════════════
+       HERO
+    ════════════════════════════ */
+    .hero {
+      background: linear-gradient(150deg, #0a2e18 0%, #1a5c34 50%, #2d7a4f 100%);
+      color: #fff;
+      padding: 70px 24px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* subtle radial glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(80,210,130,.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #a8f0c0;
+      font-size: .82rem;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 99px;
+      letter-spacing: .4px;
+      margin-bottom: 26px;
+      position: relative;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.12;
+      margin-bottom: 20px;
+      letter-spacing: -.6px;
+      position: relative;
+    }
+    .hero h1 span { color: #6ee89a; }
+    .hero p {
+      font-size: clamp(.97rem, 2.2vw, 1.15rem);
+      opacity: .88;
+      max-width: 540px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+      position: relative;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      color: var(--green);
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 800;
+      padding: 16px 38px;
+      border-radius: 12px;
+      box-shadow: 0 8px 28px rgba(0,0,0,.28);
+      transition: transform .15s, box-shadow .15s;
+      position: relative;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 34px rgba(0,0,0,.32); text-decoration: none; }
+    .hero-cta-sub {
+      display: block;
+      font-size: .78rem;
+      color: rgba(255,255,255,.6);
+      margin-top: 14px;
+      position: relative;
+    }
+
+    /* hero food photos row */
+    .hero-photos {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 20px;
+      margin-top: 52px;
+      position: relative;
+    }
+    .hero-photo-wrap {
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+      box-shadow: 0 -4px 28px rgba(0,0,0,.35);
+      flex-shrink: 0;
+      transition: transform .3s;
+    }
+    .hero-photo-wrap:hover { transform: translateY(-8px); }
+    .hero-photo-wrap.main  { width: 320px; height: 240px; }
+    .hero-photo-wrap.side  { width: 220px; height: 190px; opacity: .88; }
+    .hero-photo-wrap img   { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* scatter leaves over hero bottom */
+    .hero-leaves-scatter {
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      opacity: .12;
+      pointer-events: none;
+    }
+
+    /* ════════════════════════════
+       PROBLEM STRIP
+    ════════════════════════════ */
+    .problem-strip {
+      background: var(--amber-lt);
+      border-top: 1px solid #f0d090;
+      border-bottom: 1px solid #f0d090;
+      padding: 26px 24px;
+    }
+    .problem-strip .inner { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .problem-strip .pill-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .problem-strip p { font-size: .95rem; color: #7a4a10; line-height: 1.6; }
+    .problem-strip strong { color: #5a3008; }
+
+    /* ════════════════════════════
+       HOW IT WORKS
+    ════════════════════════════ */
+    .how-section { padding: 86px 24px; background: var(--bg); position: relative; overflow: hidden; }
+
+    /* floating leaf decoration behind steps */
+    .how-leaf {
+      position: absolute;
+      right: -60px; top: 40px;
+      width: 300px;
+      opacity: .07;
+      transform: rotate(15deg);
+      pointer-events: none;
+    }
+
+    .section-label {
+      text-align: center; font-size: .75rem; font-weight: 700;
+      letter-spacing: 1.4px; text-transform: uppercase;
+      color: var(--green-md); margin-bottom: 10px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+      font-weight: 800; color: var(--text);
+      margin-bottom: 10px; letter-spacing: -.3px;
+    }
+    .section-sub {
+      text-align: center; font-size: .95rem; color: var(--muted);
+      max-width: 500px; margin: 0 auto 52px; line-height: 1.65;
+    }
+
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; position: relative; }
+    .step {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 22px 24px;
+      box-shadow: var(--shadow);
+      border: 1.5px solid var(--border);
+      text-align: center;
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      background: var(--green); color: #fff;
+      font-size: .88rem; font-weight: 800;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+      box-shadow: 0 3px 10px rgba(45,122,79,.35);
+    }
+    .step-icon { font-size: 2.2rem; display: block; margin-bottom: 12px; }
+    .step h3 { font-size: .97rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .step p   { font-size: .85rem; color: var(--muted); line-height: 1.55; }
+
+    /* ════════════════════════════
+       FOOD PHOTO SPLIT SECTION
+    ════════════════════════════ */
+    .split-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 420px;
+    }
+    .split-photo { overflow: hidden; }
+    .split-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; }
+    .split-photo:hover img { transform: scale(1.04); }
+    .split-text {
+      background: var(--green);
+      color: #fff;
+      padding: 56px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .split-text::after {
+      content: '';
+      position: absolute;
+      right: -60px; bottom: -60px;
+      width: 220px; height: 220px;
+      background: rgba(255,255,255,.06);
+      border-radius: 50%;
+    }
+    .split-text h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 16px; line-height: 1.25; }
+    .split-text p  { font-size: .97rem; opacity: .88; line-height: 1.7; margin-bottom: 28px; }
+    .split-leaf {
+      position: absolute;
+      top: -30px; right: -20px;
+      width: 160px;
+      opacity: .18;
+      transform: rotate(20deg);
+      pointer-events: none;
+    }
+    .split-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--green);
+      font-weight: 800;
+      font-size: .95rem;
+      padding: 13px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      width: fit-content;
+      box-shadow: 0 4px 16px rgba(0,0,0,.18);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .split-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,.22); text-decoration: none; }
+    @media (max-width: 700px) {
+      .split-section { grid-template-columns: 1fr; }
+      .split-photo { height: 250px; }
+      .split-text { padding: 36px 28px; }
+    }
+
+    /* ════════════════════════════
+       FEATURES
+    ════════════════════════════ */
+    .features-section {
+      padding: 86px 24px;
+      background: linear-gradient(180deg, #eef7f1 0%, var(--bg) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .features-leaf {
+      position: absolute;
+      left: -40px; bottom: 40px;
+      width: 260px;
+      opacity: .08;
+      transform: rotate(-20deg) scaleX(-1);
+      pointer-events: none;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 22px;
+    }
+    .feature-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1.5px solid var(--border);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+    .feature-icon {
+      font-size: 1.7rem;
+      width: 50px; height: 50px;
+      background: var(--green-lt);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .feature-card h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+    .feature-card p  { font-size: .84rem; color: var(--muted); line-height: 1.5; }
+
+    /* ════════════════════════════
+       SAMPLE RESULT PREVIEW
+    ════════════════════════════ */
+    .preview-section { padding: 86px 24px; background: var(--bg); }
+    .preview-box {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 6px 36px rgba(0,0,0,.12);
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .preview-bar {
+      background: linear-gradient(135deg, #1a5c34, #2d7a4f);
+      padding: 11px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,.8);
+      font-size: .82rem;
+    }
+    .preview-bar .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.35); }
+    .preview-content { padding: 24px; }
+    .preview-meal-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #eef5eb; color: var(--green);
+      font-weight: 700; font-size: .9rem;
+      padding: 8px 16px; border-radius: 8px; margin-bottom: 18px;
+    }
+    .preview-concerns {
+      background: var(--red-lt); border: 1px solid #f0b8b2;
+      border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+    }
+    .preview-concerns-title { font-size: .82rem; font-weight: 700; color: var(--red); margin-bottom: 8px; }
+    .preview-concern-row { display: flex; gap: 8px; margin-bottom: 5px; font-size: .82rem; color: #8a2a20; }
+    .preview-concern-row:last-child { margin-bottom: 0; }
+    .preview-additions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .preview-add-pill {
+      background: var(--green-lt); border: 1px solid #b8dcc8;
+      border-radius: 8px; padding: 8px 14px;
+      display: flex; align-items: center; gap: 6px;
+      font-size: .83rem; font-weight: 600; color: var(--green);
+    }
+
+    /* ════════════════════════════
+       CTA
+    ════════════════════════════ */
+    .cta-section {
+      background: linear-gradient(135deg, #0a2e18 0%, #1a5c34 50%, #2d7a4f 100%);
+      padding: 90px 24px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 100%, rgba(80,210,130,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-leaves-left {
+      position: absolute; left: -40px; top: 50%; transform: translateY(-50%) rotate(-15deg);
+      width: 260px; opacity: .18; pointer-events: none;
+    }
+    .cta-leaves-right {
+      position: absolute; right: -40px; top: 50%; transform: translateY(-50%) rotate(15deg) scaleX(-1);
+      width: 240px; opacity: .15; pointer-events: none;
+    }
+    .cta-section h2 {
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      font-weight: 800; margin-bottom: 14px; letter-spacing: -.3px;
+      position: relative;
+    }
+    .cta-section p {
+      font-size: 1rem; opacity: .82; max-width: 460px;
+      margin: 0 auto 38px; line-height: 1.7;
+      position: relative;
+    }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #fff; color: var(--green);
+      text-decoration: none; font-size: 1.05rem; font-weight: 800;
+      padding: 16px 42px; border-radius: 12px;
+      box-shadow: 0 8px 28px rgba(0,0,0,.28);
+      transition: transform .15s, box-shadow .15s;
+      position: relative;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 34px rgba(0,0,0,.32); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 52px 20px 0; }
+      .hero-photo-wrap.side { display: none; }
+      .hero-photo-wrap.main { width: 100%; max-width: 320px; }
+      .steps, .features-grid { grid-template-columns: 1fr; }
+      .preview-additions { flex-direction: column; }
+      .cta-leaves-left, .cta-leaves-right { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="intro.html">
+    <img src="images/logo.jpeg" alt="MyMeal" />
+  </a>
+  <nav>
+    <a class="nav-link active" href="intro.html">🏠 Home</a>
+    <a class="nav-link" href="index.html">✨ Analyzer</a>
+    <a class="nav-link" href="feedback.html">💬 Feedback</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <div class="hero-badge">✨ AI-Powered Nutrition Advice</div>
+    <h1>Eat better,<br><span>not less.</span></h1>
+    <p>Tell us what's on your plate. We'll spot the nutritional gaps and suggest simple, realistic additions — without asking you to give up the foods you love.</p>
+    <a class="hero-cta" href="index.html">🥗 Analyze My Meal</a>
+    <span class="hero-cta-sub">Free · No account needed · Results in seconds</span>
+
+    <div class="hero-photos">
+      <div class="hero-photo-wrap side">
+        <img src="images/bowl-chicken.jpeg" alt="Healthy chicken bowl" />
+      </div>
+      <div class="hero-photo-wrap main">
+        <img src="images/plate-steak.jpeg" alt="Balanced plate with steak and salad" />
+      </div>
+      <div class="hero-photo-wrap side">
+        <img src="images/bowl-chicken.jpeg" alt="Healthy bowl" style="object-position:center 30%" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PROBLEM STRIP ══ -->
+  <div class="problem-strip">
+    <div class="inner">
+      <span class="pill-icon">💡</span>
+      <p><strong>Most healthy eating advice tells you what NOT to eat.</strong> We take a different approach — we help you build on what you already enjoy by identifying nutritional gaps and filling them with simple additions.</p>
+    </div>
+  </div>
+
+  <!-- ══ HOW IT WORKS ══ -->
+  <section class="how-section">
+    <img class="how-leaf" src="images/leaves-scatter.jpeg" alt="" />
+    <div class="inner">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">Three steps to a healthier meal</h2>
+      <p class="section-sub">No calorie counting. No strict diets. Just smarter choices, powered by AI.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <span class="step-icon">🍽️</span>
+          <h3>Describe your meal</h3>
+          <p>Type what you're eating — as simple as "burger and fries" or as detailed as you like. Optionally add dietary restrictions.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <span class="step-icon">🤖</span>
+          <h3>AI analyzes it</h3>
+          <p>Our AI nutritionist identifies the nutritional gaps — excess sodium, missing fiber, lack of vitamins, and more.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <span class="step-icon">🌿</span>
+          <h3>Get smart additions</h3>
+          <p>Receive 3–4 realistic, specific foods to add alongside your meal to create a healthier, more balanced plate.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SPLIT PHOTO + TEXT ══ -->
+  <div class="split-section">
+    <div class="split-photo">
+      <img src="images/plate-steak.jpeg" alt="Balanced plate — steak, potatoes and salad" />
+    </div>
+    <div class="split-text">
+      <img class="split-leaf" src="images/leaves-pair.jpeg" alt="" />
+      <h2>Your meal,<br>just a little better.</h2>
+      <p>We don't tell you to swap your burger for a salad. We suggest adding a handful of spinach, a side of cherry tomatoes, or a glass of water — small, achievable changes that actually make a difference.</p>
+      <a class="split-cta" href="index.html">✨ Try it now</a>
+    </div>
+  </div>
+
+  <!-- ══ FEATURES ══ -->
+  <section class="features-section">
+    <img class="features-leaf" src="images/leaves-scatter.jpeg" alt="" />
+    <div class="inner">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Everything you need to eat smarter</h2>
+      <p class="section-sub">Built to be practical, personalized, and instant.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚠️</div>
+          <div>
+            <h3>Nutritional concern detection</h3>
+            <p>See exactly what's off about your meal — too much sodium, saturated fat, refined carbs, or missing key nutrients.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌿</div>
+          <div>
+            <h3>Personalized food additions</h3>
+            <p>Get 3–4 specific, real foods with portion sizes, reasons, and key nutrients listed. No vague advice, no supplements.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚫</div>
+          <div>
+            <h3>Dietary restriction support</h3>
+            <p>Vegan, gluten-free, keto, halal, nut-free, and more — every suggestion strictly respects your restrictions.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <div>
+            <h3>Before &amp; after nutrition score</h3>
+            <p>Animated bars show how additions improve your meal's fiber, protein, vitamins, and overall balance.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <div>
+            <h3>Instant results</h3>
+            <p>Powered by GPT-4o — full analysis in seconds. No account, no sign-up, no waiting.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <div>
+            <h3>Private &amp; secure</h3>
+            <p>Your API key and meal data live only in your browser. Nothing is sent to or stored on any third-party server.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SAMPLE RESULT PREVIEW ══ -->
+  <section class="preview-section">
+    <div class="inner">
+      <div class="section-label">Example</div>
+      <h2 class="section-title">See what an analysis looks like</h2>
+      <p class="section-sub" style="margin-bottom:36px">Here's what you get when you enter "double cheeseburger and large fries".</p>
+
+      <div class="preview-box">
+        <div class="preview-bar">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span style="margin-left:8px;">MyMeal Analyzer</span>
+        </div>
+        <div class="preview-content">
+          <div class="preview-meal-tag">🍔 Double cheeseburger and large fries</div>
+          <div class="preview-concerns">
+            <div class="preview-concerns-title">⚠️ Nutritional Concerns</div>
+            <div class="preview-concern-row"><span>🧂</span><span><strong>Very high sodium</strong> — far exceeds the daily recommended limit in a single meal.</span></div>
+            <div class="preview-concern-row"><span>🧈</span><span><strong>Excess saturated fat</strong> — linked to elevated LDL cholesterol.</span></div>
+            <div class="preview-concern-row"><span>🌾</span><span><strong>Almost no fiber</strong> — refined bun and fried potatoes contribute little dietary fiber.</span></div>
+            <div class="preview-concern-row"><span>🥦</span><span><strong>Missing vegetables</strong> — very low in vitamins A, C, and K.</span></div>
+          </div>
+          <div style="font-size:.85rem;font-weight:700;color:var(--green);margin-bottom:10px;">🌿 Suggested additions</div>
+          <div class="preview-additions">
+            <div class="preview-add-pill"><span>🥗</span> Side salad</div>
+            <div class="preview-add-pill"><span>🍅</span> Sliced tomatoes</div>
+            <div class="preview-add-pill"><span>💧</span> Water instead of cola</div>
+            <div class="preview-add-pill"><span>🫐</span> A handful of blueberries</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FINAL CTA ══ -->
+  <section class="cta-section">
+    <img class="cta-leaves-left"  src="images/leaves-scatter.jpeg" alt="" />
+    <img class="cta-leaves-right" src="images/leaves-scatter.jpeg" alt="" />
+    <div class="inner">
+      <h2>Ready to eat a little better today?</h2>
+      <p>It takes 30 seconds. Just describe your meal and let AI do the rest.</p>
+      <a class="cta-btn" href="index.html">✨ Analyze My Meal — Free</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© MyMeal · AI Food Advisor · For informational purposes only</span>
+  <a href="index.html">✨ Analyzer</a>
+  <a href="feedback.html">💬 Feedback</a>
+</footer>
+
+</body>
+</html>

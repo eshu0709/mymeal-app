@@ -1,0 +1,120 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:    #2d7a4f;
+  --green-lt: #e8f5ee;
+  --green-md: #4caf78;
+  --amber:    #e07b2a;
+  --amber-lt: #fff4e8;
+  --red:      #d94f3d;
+  --red-lt:   #fdecea;
+  --bg:       #f7f9f7;
+  --card:     #ffffff;
+  --text:     #1a2e1a;
+  --muted:    #6b7c6b;
+  --border:   #d8e8d8;
+  --radius:   14px;
+  --shadow:   0 2px 16px rgba(0,0,0,.08);
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, #1a5c34 0%, #2d7a4f 60%, #3d9e66 100%);
+  color: #fff;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.logo img {
+  height: 44px;
+  width: auto;
+  /* the logo has a white background — blend it into the green header */
+  mix-blend-mode: multiply;
+  filter: brightness(0) invert(1);
+  object-fit: contain;
+}
+/* fallback text shown only if image fails */
+.logo-icon { display: none; }
+.logo-sub  { display: none; }
+
+/* ── Nav ── */
+nav { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  color: rgba(255,255,255,.82);
+  text-decoration: none;
+  font-size: .9rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  transition: background .15s, color .15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-link:hover  { background: rgba(255,255,255,.15); color: #fff; }
+.nav-link.active { background: rgba(255,255,255,.22); color: #fff; font-weight: 700; }
+
+/* ── Layout ── */
+main {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  flex: 1;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  margin-bottom: 28px;
+}
+.card h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+  padding: 22px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+footer a { color: var(--green); text-decoration: none; font-weight: 600; }
+footer a:hover { text-decoration: underline; }

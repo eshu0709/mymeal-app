@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyMeal — AI Food Advisor</title>
+  <style>
+/* === shared styles === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:    #2d7a4f;
+  --green-lt: #e8f5ee;
+  --green-md: #4caf78;
+  --amber:    #e07b2a;
+  --amber-lt: #fff4e8;
+  --red:      #d94f3d;
+  --red-lt:   #fdecea;
+  --bg:       #f7f9f7;
+  --card:     #ffffff;
+  --text:     #1a2e1a;
+  --muted:    #6b7c6b;
+  --border:   #d8e8d8;
+  --radius:   14px;
+  --shadow:   0 2px 16px rgba(0,0,0,.08);
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, #1a5c34 0%, #2d7a4f 60%, #3d9e66 100%);
+  color: #fff;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.logo img {
+  height: 44px;
+  width: auto;
+  /* the logo has a white background — blend it into the green header */
+  mix-blend-mode: multiply;
+  filter: brightness(0) invert(1);
+  object-fit: contain;
+}
+/* fallback text shown only if image fails */
+.logo-icon { display: none; }
+.logo-sub  { display: none; }
+
+/* ── Nav ── */
+nav { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  color: rgba(255,255,255,.82);
+  text-decoration: none;
+  font-size: .9rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  transition: background .15s, color .15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-link:hover  { background: rgba(255,255,255,.15); color: #fff; }
+.nav-link.active { background: rgba(255,255,255,.22); color: #fff; font-weight: 700; }
+
+/* ── Layout ── */
+main {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  flex: 1;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  margin-bottom: 28px;
+}
+.card h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+  padding: 22px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+footer a { color: var(--green); text-decoration: none; font-weight: 600; }
+footer a:hover { text-decoration: underline; }
+
+/* === end shared === */
+</style>
+  <style>
+    /* (API key banner removed — key lives in Vercel env vars) */
+
+    textarea {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 100px;
+      outline: none;
+      color: var(--text);
+      transition: border-color .2s;
+    }
+    textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(45,122,79,.12); }
+    textarea::placeholder { color: #aabcaa; }
+
+    .examples {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .example-btn {
+      background: var(--green-lt);
+      border: 1px solid #b8dcc8;
+      color: var(--green);
+      font-size: .82rem;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .example-btn:hover { background: #d0eddb; transform: translateY(-1px); }
+
+    /* ── Dietary restrictions ── */
+    .diet-section {
+      margin-top: 20px;
+      border-top: 1.5px solid var(--border);
+      padding-top: 18px;
+    }
+    .diet-label { font-size: .88rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .diet-optional { font-weight: 400; color: var(--muted); font-size: .82rem; }
+    .diet-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .diet-tag {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s, transform .1s;
+    }
+    .diet-tag:hover { background: #e0ece5; border-color: #a8ccb8; color: var(--green); transform: translateY(-1px); }
+    .diet-tag.active { background: var(--green); border-color: var(--green); color: #fff; box-shadow: 0 2px 8px rgba(45,122,79,.3); }
+    #diet-custom {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: .9rem;
+      font-family: inherit;
+      outline: none;
+      color: var(--text);
+      background: #fff;
+      transition: border-color .2s;
+    }
+    #diet-custom:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(45,122,79,.12); }
+    #diet-custom::placeholder { color: #aabcaa; }
+
+    /* ── Analyze button ── */
+    .analyze-btn {
+      margin-top: 20px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-md) 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      letter-spacing: .2px;
+      transition: opacity .2s, transform .1s, box-shadow .2s;
+      box-shadow: 0 4px 14px rgba(45,122,79,.35);
+    }
+    .analyze-btn:hover:not(:disabled) { opacity: .92; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(45,122,79,.4); }
+    .analyze-btn:active:not(:disabled) { transform: translateY(0); }
+    .analyze-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+    /* ── Loader ── */
+    .loader { display: none; flex-direction: column; align-items: center; gap: 12px; padding: 40px; color: var(--muted); }
+    .loader.visible { display: flex; }
+    .spinner {
+      width: 44px; height: 44px;
+      border: 4px solid var(--border);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin .9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Results ── */
+    #results { display: none; }
+    #results.visible { display: block; }
+
+    .meal-header {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px 20px;
+      background: #eef5eb;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: .95rem;
+      color: var(--green);
+      font-weight: 600;
+    }
+    .diet-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--green-lt);
+      border: 1px solid #b8dcc8;
+      color: var(--green);
+      font-size: .78rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    /* Problems */
+    .problems-card {
+      background: var(--red-lt);
+      border: 1.5px solid #f0b8b2;
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 22px;
+    }
+    .problems-card h3 { font-size: 1rem; font-weight: 700; color: var(--red); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .problem-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f4ccc8; }
+    .problem-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .problem-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+    .problem-text strong { display: block; font-size: .92rem; color: #b03020; margin-bottom: 3px; }
+    .problem-text p { font-size: .87rem; color: #7a3020; line-height: 1.45; }
+
+    /* Additions */
+    .additions-title { font-size: 1rem; font-weight: 700; color: var(--green); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .additions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .addition-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .addition-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.1); }
+    .addition-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .addition-emoji { font-size: 1.8rem; }
+    .addition-name { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .addition-portion { font-size: .78rem; color: var(--muted); background: var(--bg); border-radius: 6px; padding: 2px 8px; display: inline-block; margin-bottom: 8px; }
+    .addition-why { font-size: .87rem; color: #4a5e4a; line-height: 1.5; margin-bottom: 10px; }
+    .addition-nutrients { display: flex; flex-wrap: wrap; gap: 6px; }
+    .nutrient-tag { font-size: .75rem; padding: 3px 9px; border-radius: 12px; font-weight: 600; background: var(--green-lt); color: var(--green); border: 1px solid #b8dcc8; }
+
+    /* Scores */
+    .score-section { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 4px; }
+    .score-section h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+    .score-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+    .score-label { font-size: .85rem; width: 120px; flex-shrink: 0; color: var(--muted); }
+    .score-bar-wrap { flex: 1; background: var(--bg); border-radius: 99px; height: 10px; overflow: hidden; }
+    .score-bar { height: 100%; border-radius: 99px; transition: width .8s cubic-bezier(.4,0,.2,1); }
+
+    /* Error */
+    .error-box { display: none; background: #fff3f0; border: 1.5px solid #f0b0a0; border-radius: var(--radius); padding: 16px 20px; color: var(--red); font-size: .92rem; gap: 10px; align-items: flex-start; }
+    .page-hero {
+      background: linear-gradient(135deg, #0e3d22 0%, #1a5c34 55%, #2d7a4f 100%);
+      color: #fff;
+      padding: 36px 32px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+    .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; }
+    .page-hero-text p  { font-size: .92rem; opacity: .8; max-width: 440px; line-height: 1.55; }
+    .page-hero-img {
+      width: 160px;
+      opacity: .55;
+      flex-shrink: 0;
+      transform: rotate(10deg);
+      margin-right: -20px;
+      pointer-events: none;
+    }
+    @media (max-width: 540px) { .page-hero-img { display: none; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="intro.html">
+    <img src="images/logo.jpeg" alt="MyMeal" />
+  </a>
+  <nav>
+    <a class="nav-link" href="intro.html">🏠 Home</a>
+    <a class="nav-link active" href="index.html">✨ Analyzer</a>
+    <a class="nav-link" href="feedback.html">💬 Feedback</a>
+  </nav>
+</header>
+
+<main>
+  <!-- Page hero banner -->
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <h1>🥗 Meal Analyzer</h1>
+      <p>Describe your meal and get AI-powered nutritional analysis with healthier addition suggestions.</p>
+    </div>
+    <img class="page-hero-img" src="images/leaves-scatter.jpeg" alt="" />
+  </div>
+
+  <div style="max-width:860px;margin:0 auto;padding:32px 20px 80px">
+  <!-- API Key Section -->
+  <!-- Input Card -->
+  <div class="card">
+    <h2>🍽️ What are you eating?</h2>
+    <textarea id="meal-input" placeholder="Describe your current meal — e.g. &quot;cheeseburger, large fries, and a regular cola&quot;" rows="3"></textarea>
+
+    <div class="examples">
+      <span style="font-size:.82rem;color:var(--muted);align-self:center;">Try:</span>
+      <button class="example-btn" data-meal="Double cheeseburger, large fries, and a large cola">🍔 Burger &amp; Fries</button>
+      <button class="example-btn" data-meal="Pepperoni pizza (3 slices) and a beer">🍕 Pizza &amp; Beer</button>
+      <button class="example-btn" data-meal="Instant ramen with an egg">🍜 Instant Ramen</button>
+      <button class="example-btn" data-meal="Grilled chicken breast with white rice">🍗 Chicken &amp; Rice</button>
+      <button class="example-btn" data-meal="Cereal with whole milk for breakfast">🥣 Cereal Breakfast</button>
+      <button class="example-btn" data-meal="Steak, baked potato with sour cream and butter, and a glass of red wine">🥩 Steak Dinner</button>
+    </div>
+
+    <div class="diet-section">
+      <div class="diet-label">🚫 Dietary Restrictions <span class="diet-optional">(optional)</span></div>
+      <div class="diet-tags" id="diet-tags">
+        <button class="diet-tag" data-diet="vegetarian">🥦 Vegetarian</button>
+        <button class="diet-tag" data-diet="vegan">🌱 Vegan</button>
+        <button class="diet-tag" data-diet="gluten-free">🌾 Gluten-Free</button>
+        <button class="diet-tag" data-diet="dairy-free">🥛 Dairy-Free</button>
+        <button class="diet-tag" data-diet="nut-free">🥜 Nut-Free</button>
+        <button class="diet-tag" data-diet="halal">☪️ Halal</button>
+        <button class="diet-tag" data-diet="kosher">✡️ Kosher</button>
+        <button class="diet-tag" data-diet="low-sodium">🧂 Low Sodium</button>
+        <button class="diet-tag" data-diet="keto">🥑 Keto</button>
+        <button class="diet-tag" data-diet="low-carb">🍞 Low Carb</button>
+      </div>
+      <input id="diet-custom" type="text" placeholder="Other restrictions — e.g. shellfish allergy, diabetic, lactose intolerant…" />
+    </div>
+
+    <button class="analyze-btn" id="analyze-btn" onclick="analyzeMeal()">
+      <span id="btn-icon">✨</span>
+      <span id="btn-text">Analyze My Meal</span>
+    </button>
+  </div>
+
+  <!-- Error -->
+  <div class="error-box" id="error-box">
+    <span>⚠️</span>
+    <span id="error-msg">Something went wrong.</span>
+  </div>
+
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    <span>Analyzing your meal with AI…</span>
+  </div>
+
+  <!-- Results -->
+  <div id="results">
+    <div class="meal-header">
+      <span>🍽️</span>
+      <span>Analyzing: <em id="meal-display"></em></span>
+    </div>
+
+    <div class="problems-card">
+      <h3>⚠️ Nutritional Concerns</h3>
+      <div id="problems-list"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:22px">
+      <div class="additions-title">🌿 Healthier Additions to Balance Your Meal</div>
+      <div class="additions-grid" id="additions-grid"></div>
+    </div>
+
+    <div class="score-section">
+      <h3>📊 Nutritional Balance (before → after additions)</h3>
+      <div id="scores-container"></div>
+    </div>
+  </div>
+  </div><!-- /inner wrapper -->
+</main>
+
+<footer>
+  <span>Powered by OpenAI · For informational purposes only</span>
+  <a href="feedback.html">💬 Share Feedback</a>
+</footer>
+
+<script>
+  document.querySelectorAll('.example-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('meal-input').value = btn.dataset.meal;
+    });
+  });
+
+  document.querySelectorAll('.diet-tag').forEach(tag => {
+    tag.addEventListener('click', () => tag.classList.toggle('active'));
+  });
+
+  function getDietRestrictions() {
+    const selected = [...document.querySelectorAll('.diet-tag.active')].map(t => t.dataset.diet);
+    const custom = document.getElementById('diet-custom').value.trim();
+    if (custom) selected.push(custom);
+    return selected;
+  }
+
+  function showError(msg) {
+    document.getElementById('error-msg').textContent = msg;
+    document.getElementById('error-box').classList.add('visible');
+  }
+  function hideError() {
+    document.getElementById('error-box').classList.remove('visible');
+  }
+
+  async function analyzeMeal() {
+    const meal = document.getElementById('meal-input').value.trim();
+    const restrictions = getDietRestrictions();
+
+    if (!meal) { showError('Please describe your meal first.'); return; }
+    hideError();
+
+    const btn = document.getElementById('analyze-btn');
+    btn.disabled = true;
+    document.getElementById('btn-text').textContent = 'Analyzing…';
+    document.getElementById('btn-icon').textContent = '⏳';
+    document.getElementById('loader').classList.add('visible');
+    document.getElementById('results').classList.remove('visible');
+
+    try {
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ meal, restrictions })
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error || `Server error ${res.status}`);
+      }
+
+      const result = await res.json();
+      renderResults(meal, result, restrictions);
+
+    } catch (err) {
+      showError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      btn.disabled = false;
+      document.getElementById('btn-text').textContent = 'Analyze My Meal';
+      document.getElementById('btn-icon').textContent = '✨';
+      document.getElementById('loader').classList.remove('visible');
+    }
+  }
+
+  function renderResults(meal, data, restrictions) {
+    document.getElementById('meal-display').textContent = meal;
+
+    const mealHeader = document.querySelector('.meal-header');
+    mealHeader.querySelectorAll('.diet-badge').forEach(b => b.remove());
+    (restrictions || []).forEach(r => {
+      const badge = document.createElement('span');
+      badge.className = 'diet-badge';
+      badge.textContent = '🚫 ' + r;
+      mealHeader.appendChild(badge);
+    });
+
+    const probList = document.getElementById('problems-list');
+    probList.innerHTML = '';
+    (data.problems || []).forEach(p => {
+      probList.insertAdjacentHTML('beforeend', `
+        <div class="problem-item">
+          <span class="problem-icon">${escHtml(p.icon || '⚠️')}</span>
+          <div class="problem-text">
+            <strong>${escHtml(p.title)}</strong>
+            <p>${escHtml(p.description)}</p>
+          </div>
+        </div>`);
+    });
+
+    const grid = document.getElementById('additions-grid');
+    grid.innerHTML = '';
+    (data.additions || []).forEach(a => {
+      const tags = (a.nutrients || []).map(n => `<span class="nutrient-tag">${escHtml(n)}</span>`).join('');
+      grid.insertAdjacentHTML('beforeend', `
+        <div class="addition-card">
+          <div class="addition-header">
+            <span class="addition-emoji">${escHtml(a.emoji || '🥗')}</span>
+            <span class="addition-name">${escHtml(a.name)}</span>
+          </div>
+          <div class="addition-portion">${escHtml(a.portion)}</div>
+          <div class="addition-why">${escHtml(a.why)}</div>
+          <div class="addition-nutrients">${tags}</div>
+        </div>`);
+    });
+
+    const cont = document.getElementById('scores-container');
+    cont.innerHTML = '';
+    const dims = [
+      { key: 'fiber',    label: 'Fiber',    color: '#4caf78' },
+      { key: 'protein',  label: 'Protein',  color: '#2d7a4f' },
+      { key: 'vitamins', label: 'Vitamins', color: '#e07b2a' },
+      { key: 'balance',  label: 'Balance',  color: '#3d9e66' },
+    ];
+    const before = data.scores?.before || {};
+    const after  = data.scores?.after  || {};
+    dims.forEach(d => {
+      const b  = clamp(before[d.key] || 0);
+      const af = clamp(after[d.key]  || 0);
+      cont.insertAdjacentHTML('beforeend', `
+        <div class="score-row">
+          <span class="score-label">${d.label}</span>
+          <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="score-bar-wrap" style="flex:1"><div class="score-bar" style="width:${b}%;background:#d0d8d0"></div></div>
+              <span style="font-size:.75rem;color:var(--muted);width:60px">Before: ${b}%</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="score-bar-wrap" style="flex:1"><div class="score-bar" id="bar-${d.key}" style="width:0%;background:${d.color}"></div></div>
+              <span style="font-size:.75rem;color:var(--text);font-weight:600;width:60px">After: ${af}%</span>
+            </div>
+          </div>
+        </div>`);
+      setTimeout(() => {
+        const el = document.getElementById(`bar-${d.key}`);
+        if (el) el.style.width = af + '%';
+      }, 100);
+    });
+
+    document.getElementById('results').classList.add('visible');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  function clamp(n) { return Math.max(0, Math.min(100, Math.round(n))); }
+</script>
+</body>
+</html>

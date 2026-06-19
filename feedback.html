@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyMeal — Feedback</title>
+  <style>
+/* === shared styles === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:    #2d7a4f;
+  --green-lt: #e8f5ee;
+  --green-md: #4caf78;
+  --amber:    #e07b2a;
+  --amber-lt: #fff4e8;
+  --red:      #d94f3d;
+  --red-lt:   #fdecea;
+  --bg:       #f7f9f7;
+  --card:     #ffffff;
+  --text:     #1a2e1a;
+  --muted:    #6b7c6b;
+  --border:   #d8e8d8;
+  --radius:   14px;
+  --shadow:   0 2px 16px rgba(0,0,0,.08);
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, #1a5c34 0%, #2d7a4f 60%, #3d9e66 100%);
+  color: #fff;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.logo img {
+  height: 44px;
+  width: auto;
+  /* the logo has a white background — blend it into the green header */
+  mix-blend-mode: multiply;
+  filter: brightness(0) invert(1);
+  object-fit: contain;
+}
+/* fallback text shown only if image fails */
+.logo-icon { display: none; }
+.logo-sub  { display: none; }
+
+/* ── Nav ── */
+nav { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  color: rgba(255,255,255,.82);
+  text-decoration: none;
+  font-size: .9rem;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  transition: background .15s, color .15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-link:hover  { background: rgba(255,255,255,.15); color: #fff; }
+.nav-link.active { background: rgba(255,255,255,.22); color: #fff; font-weight: 700; }
+
+/* ── Layout ── */
+main {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  flex: 1;
+}
+
+/* ── Card ── */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  margin-bottom: 28px;
+}
+.card h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+  padding: 22px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+footer a { color: var(--green); text-decoration: none; font-weight: 600; }
+footer a:hover { text-decoration: underline; }
+
+/* === end shared === */
+</style>
+  <style>
+    main { max-width: 760px; }
+
+    .feedback-hero {
+      text-align: center;
+      padding: 48px 24px 36px;
+    }
+    .feedback-hero .icon {
+      font-size: 3.2rem;
+      display: block;
+      margin-bottom: 16px;
+    }
+    .feedback-hero h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+    .feedback-hero p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .why-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .why-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .why-card .why-icon { font-size: 2rem; display: block; margin-bottom: 10px; }
+    .why-card h3 { font-size: .9rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .why-card p  { font-size: .82rem; color: var(--muted); line-height: 1.45; }
+
+    /* Form embed wrapper */
+    .form-wrapper {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .form-wrapper iframe {
+      width: 100%;
+      height: 860px;
+      border: none;
+      display: block;
+    }
+
+    .open-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-md) 100%);
+      color: #fff;
+      text-decoration: none;
+      font-size: .95rem;
+      font-weight: 700;
+      padding: 13px 28px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(45,122,79,.35);
+      transition: opacity .2s, transform .1s, box-shadow .2s;
+    }
+    .open-btn:hover { opacity: .92; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(45,122,79,.4); text-decoration: none; }
+
+    .page-hero {
+      background: linear-gradient(135deg, #0e3d22 0%, #1a5c34 55%, #2d7a4f 100%);
+      color: #fff;
+      padding: 36px 32px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      overflow: hidden;
+    }
+    .page-hero-text h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; letter-spacing: -.3px; }
+    .page-hero-text p  { font-size: .92rem; opacity: .8; line-height: 1.55; }
+    .page-hero-img { width: 160px; opacity: .5; flex-shrink: 0; transform: rotate(-10deg); margin-right: -20px; pointer-events: none; }
+    @media (max-width: 540px) { .page-hero-img { display: none; } }
+
+    .feedback-hero { text-align: center; padding: 40px 24px 28px; }
+    .feedback-hero .icon { font-size: 2.8rem; display: block; margin-bottom: 14px; }
+    .feedback-hero h2 { font-size: 1.5rem; font-weight: 800; color: var(--green); margin-bottom: 8px; }
+    .feedback-hero p  { font-size: .97rem; color: var(--muted); max-width: 460px; margin: 0 auto; line-height: 1.6; }
+
+    .fallback-note { text-align: center; margin-bottom: 32px; font-size: .88rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="intro.html">
+    <img src="images/logo.jpeg" alt="MyMeal" />
+  </a>
+  <nav>
+    <a class="nav-link" href="intro.html">🏠 Home</a>
+    <a class="nav-link" href="index.html">✨ Analyzer</a>
+    <a class="nav-link active" href="feedback.html">💬 Feedback</a>
+  </nav>
+</header>
+
+<main>
+  <!-- Page hero banner -->
+  <div class="page-hero">
+    <div class="page-hero-text">
+      <h1>💬 Share Your Feedback</h1>
+      <p>Help us make MyMeal better — tell us what you love, what's missing, or how we can improve.</p>
+    </div>
+    <img class="page-hero-img" src="images/leaves-pair.jpeg" alt="" />
+  </div>
+
+  <!-- Sub-hero -->
+  <div class="feedback-hero">
+    <span class="icon">🙏</span>
+    <h2>Your feedback shapes MyMeal</h2>
+    <p>Every response helps us improve the AI recommendations, add features you need, and fix things that aren't working.</p>
+  </div>
+
+  <!-- Why your feedback matters -->
+  <div class="why-cards">
+    <div class="why-card">
+      <span class="why-icon">🎯</span>
+      <h3>Improve Accuracy</h3>
+      <p>Your input helps us fine-tune AI recommendations to be more precise and relevant.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">🌱</span>
+      <h3>New Features</h3>
+      <p>Suggest features you'd like to see — your ideas shape the product roadmap.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">🐛</span>
+      <h3>Report Issues</h3>
+      <p>Found something broken or a recommendation that seemed off? Let us know.</p>
+    </div>
+  </div>
+
+  <!-- Embedded Google Form -->
+  <div class="form-wrapper">
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSc6wqb2_jv0YSaVy85P9mFNQV2k2hDT6NttQTHJIqXsl0Hbdg/viewform?embedded=true"
+      title="MyMeal Feedback Form"
+      loading="lazy">
+      Loading form…
+    </iframe>
+  </div>
+
+  <!-- Fallback open-in-new-tab -->
+  <div class="fallback-note">
+    <p style="margin-bottom:12px">If the form doesn't load, open it directly:</p>
+    <a class="open-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSc6wqb2_jv0YSaVy85P9mFNQV2k2hDT6NttQTHJIqXsl0Hbdg/viewform" target="_blank" rel="noopener">
+      ↗ Open Form in New Tab
+    </a>
+  </div>
+</main>
+
+<footer>
+  <span>© MyMeal · AI Food Advisor</span>
+  <a href="index.html">🏠 Back to Home</a>
+</footer>
+
+</body>
+</html>
