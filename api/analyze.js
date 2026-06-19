@@ -77,8 +77,14 @@ Rules:
 
     const result = JSON.parse(jsonMatch[0]);
 
-    // ── Log to Google Sheets (fire-and-forget — never blocks the response) ──
-    logToSheets(meal, restrictions, result).catch(() => {});
+    // ── Log to Google Sheets — await it so errors surface in Vercel logs ──
+    try {
+      await logToSheets(meal, restrictions, result);
+      console.log('✅ Logged to Google Sheets successfully');
+    } catch (sheetErr) {
+      // Log the full error but don't fail the response
+      console.error('❌ Google Sheets logging failed:', sheetErr.message, sheetErr.stack);
+    }
 
     return res.status(200).json(result);
 
@@ -89,59 +95,70 @@ Rules:
 
 // ── Google Sheets logger ──
 async function logToSheets(meal, restrictions, result) {
-  const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
-  const sheetId = process.env.GOOGLE_SHEET_ID;
+  const rawCreds = process.env.GOOGLE_SERVICE_ACCOUNT;
+  const sheetId  = process.env.GOOGLE_SHEET_ID;
 
-  // Get a Google OAuth access token using the service account
+  if (!rawCreds) throw new Error('GOOGLE_SERVICE_ACCOUNT env var is missing');
+  if (!sheetId)  throw new Error('GOOGLE_SHEET_ID env var is missing');
+
+  const credentials = JSON.parse(rawCreds);
+  console.log('🔑 Using service account:', credentials.client_email);
+
   const token = await getGoogleToken(credentials);
+  console.log('🎟️ Got access token:', token ? 'yes' : 'no');
 
-  const timestamp = new Date().toISOString();
+  const timestamp    = new Date().toISOString();
   const restrictionsStr = Array.isArray(restrictions) && restrictions.length > 0
-    ? restrictions.join(', ')
-    : 'None';
-  const problemsStr = (result.problems || []).map(p => p.title).join('; ');
+    ? restrictions.join(', ') : 'None';
+  const problemsStr  = (result.problems  || []).map(p => p.title).join('; ');
   const additionsStr = (result.additions || []).map(a => a.name).join('; ');
   const scoresBefore = JSON.stringify(result.scores?.before || {});
   const scoresAfter  = JSON.stringify(result.scores?.after  || {});
 
   const row = [timestamp, meal, restrictionsStr, problemsStr, additionsStr, scoresBefore, scoresAfter];
+  console.log('📝 Row to append:', row);
 
-  await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A1:G1:append?valueInputOption=USER_ENTERED`,
-    {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ values: [row] })
-    }
-  );
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1!A:G:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
+
+  const sheetRes = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ values: [row] })
+  });
+
+  const sheetData = await sheetRes.json();
+  console.log('📊 Sheets API response:', JSON.stringify(sheetData));
+
+  if (!sheetRes.ok) {
+    throw new Error(`Sheets API error ${sheetRes.status}: ${JSON.stringify(sheetData)}`);
+  }
 }
 
-// ── Minimal Google service account JWT auth ──
+// ── Google service account JWT auth ──
 async function getGoogleToken(credentials) {
   const now = Math.floor(Date.now() / 1000);
-  const header = { alg: 'RS256', typ: 'JWT' };
+
+  const header  = { alg: 'RS256', typ: 'JWT' };
   const payload = {
-    iss: credentials.client_email,
+    iss:   credentials.client_email,
     scope: 'https://www.googleapis.com/auth/spreadsheets',
-    aud: 'https://oauth2.googleapis.com/token',
-    iat: now,
-    exp: now + 3600
+    aud:   'https://oauth2.googleapis.com/token',
+    iat:   now,
+    exp:   now + 3600
   };
 
   const encode = obj => Buffer.from(JSON.stringify(obj)).toString('base64url');
   const unsigned = `${encode(header)}.${encode(payload)}`;
 
-  // Sign with RS256 using the private key
   const { createSign } = await import('crypto');
   const sign = createSign('RSA-SHA256');
   sign.update(unsigned);
   const signature = sign.sign(credentials.private_key, 'base64url');
   const jwt = `${unsigned}.${signature}`;
 
-  // Exchange JWT for access token
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -149,5 +166,11 @@ async function getGoogleToken(credentials) {
   });
 
   const tokenData = await tokenRes.json();
+  console.log('🔐 Token response:', JSON.stringify({ ...tokenData, access_token: tokenData.access_token ? '[REDACTED]' : 'MISSING' }));
+
+  if (!tokenData.access_token) {
+    throw new Error(`Failed to get access token: ${JSON.stringify(tokenData)}`);
+  }
+
   return tokenData.access_token;
 }
