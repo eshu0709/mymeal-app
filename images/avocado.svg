@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" fill="none">
+  <!-- Outer avocado skin -->
+  <path d="M100 20 C60 20 30 70 30 130 C30 180 62 220 100 220 C138 220 170 180 170 130 C170 70 140 20 100 20Z" fill="#2d5a1b"/>
+  <!-- Inner flesh -->
+  <path d="M100 38 C70 38 48 82 48 132 C48 172 70 206 100 206 C130 206 152 172 152 132 C152 82 130 38 100 38Z" fill="#8cc63f"/>
+  <!-- Inner flesh lighter -->
+  <path d="M100 45 C73 45 53 86 53 133 C53 170 73 200 100 200 C127 200 147 170 147 133 C147 86 127 45 100 45Z" fill="#b5d96b"/>
+  <!-- Pit -->
+  <ellipse cx="100" cy="145" rx="30" ry="36" fill="#8B5E3C"/>
+  <ellipse cx="100" cy="145" rx="25" ry="30" fill="#a06b3f"/>
+  <ellipse cx="92" cy="138" rx="8" ry="10" fill="rgba(255,255,255,0.15)"/>
+</svg>

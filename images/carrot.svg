@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 280" fill="none">
+  <!-- Carrot body -->
+  <path d="M80 40 C55 40 38 80 36 130 C34 180 50 240 80 268 C110 240 126 180 124 130 C122 80 105 40 80 40Z" fill="#f97316"/>
+  <path d="M80 40 C55 40 38 80 36 130 C34 180 50 240 80 268 C110 240 126 180 124 130 C122 80 105 40 80 40Z" fill="url(#cgrad)"/>
+  <!-- Ridges -->
+  <path d="M55 90 Q80 85 105 90" stroke="#ea6000" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M48 130 Q80 124 112 130" stroke="#ea6000" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M50 170 Q80 164 110 170" stroke="#ea6000" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M55 208 Q80 202 105 208" stroke="#ea6000" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <!-- Highlight -->
+  <path d="M62 60 Q58 120 60 170" stroke="rgba(255,255,255,0.3)" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <!-- Tops/leaves -->
+  <path d="M80 42 Q72 20 60 10 Q68 28 80 42Z" fill="#4caf6e"/>
+  <path d="M80 42 Q88 18 98 8 Q90 28 80 42Z" fill="#3a8c52"/>
+  <path d="M80 42 Q65 15 50 18 Q62 32 80 42Z" fill="#5bbf78"/>
+  <path d="M80 42 Q95 14 110 18 Q98 32 80 42Z" fill="#4caf6e"/>
+  <path d="M80 42 Q78 12 74 2 Q76 22 80 42Z" fill="#6dd48a"/>
+  <defs>
+    <linearGradient id="cgrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.1)"/>
+      <stop offset="40%" stop-color="rgba(255,255,255,0.08)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0.1)"/>
+    </linearGradient>
+  </defs>
+</svg>

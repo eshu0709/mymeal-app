@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" fill="none">
+  <!-- Main large leaf -->
+  <ellipse cx="150" cy="220" rx="85" ry="130" fill="#3a8c52" transform="rotate(-10 150 220)"/>
+  <ellipse cx="150" cy="220" rx="72" ry="118" fill="#4caf6e" transform="rotate(-10 150 220)"/>
+  <!-- Vein system -->
+  <path d="M150 100 Q148 200 155 340" stroke="#2d7a4f" stroke-width="2.5" fill="none"/>
+  <path d="M150 150 Q120 165 100 185" stroke="#2d7a4f" stroke-width="1.5" fill="none"/>
+  <path d="M150 180 Q175 195 195 210" stroke="#2d7a4f" stroke-width="1.5" fill="none"/>
+  <path d="M151 210 Q125 225 108 242" stroke="#2d7a4f" stroke-width="1.5" fill="none"/>
+  <path d="M152 240 Q178 252 194 265" stroke="#2d7a4f" stroke-width="1.5" fill="none"/>
+  <path d="M153 270 Q130 280 115 295" stroke="#2d7a4f" stroke-width="1.5" fill="none"/>
+  <!-- Stem -->
+  <path d="M150 340 Q152 360 148 380" stroke="#2d5a3a" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Small floating leaf top-left -->
+  <g transform="translate(30, 60) rotate(-35)">
+    <ellipse cx="0" cy="0" rx="28" ry="42" fill="#3a8c52"/>
+    <ellipse cx="0" cy="0" rx="22" ry="36" fill="#4caf6e"/>
+    <path d="M0 -36 Q-1 0 1 36" stroke="#2d7a4f" stroke-width="1.5" fill="none"/>
+  </g>
+
+  <!-- Small floating leaf top-right -->
+  <g transform="translate(255, 80) rotate(25)">
+    <ellipse cx="0" cy="0" rx="22" ry="34" fill="#5bbf78"/>
+    <ellipse cx="0" cy="0" rx="17" ry="28" fill="#6dd48a"/>
+    <path d="M0 -28 Q-1 0 1 28" stroke="#3a8c52" stroke-width="1.2" fill="none"/>
+  </g>
+
+  <!-- Medium leaf bottom-left -->
+  <g transform="translate(45, 300) rotate(20)">
+    <ellipse cx="0" cy="0" rx="32" ry="50" fill="#4caf6e"/>
+    <ellipse cx="0" cy="0" rx="25" ry="42" fill="#5bbf78"/>
+    <path d="M0 -42 Q-1 0 1 42" stroke="#2d7a4f" stroke-width="1.8" fill="none"/>
+  </g>
+</svg>

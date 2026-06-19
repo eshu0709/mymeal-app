@@ -268,11 +268,12 @@ footer a:hover { text-decoration: underline; }
     /* floating leaf decoration behind steps */
     .how-leaf {
       position: absolute;
-      right: -60px; top: 40px;
-      width: 300px;
-      opacity: .07;
+      right: -40px; top: 60px;
+      width: 200px;
+      opacity: .12;
       transform: rotate(15deg);
       pointer-events: none;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
     }
 
     .section-label {
@@ -346,11 +347,12 @@ footer a:hover { text-decoration: underline; }
     .split-text p  { font-size: .97rem; opacity: .88; line-height: 1.7; margin-bottom: 28px; }
     .split-leaf {
       position: absolute;
-      top: -30px; right: -20px;
-      width: 160px;
-      opacity: .18;
-      transform: rotate(20deg);
+      top: -20px; right: 10px;
+      width: 120px;
+      opacity: .25;
+      transform: rotate(15deg);
       pointer-events: none;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
     }
     .split-cta {
       display: inline-flex;
@@ -385,11 +387,12 @@ footer a:hover { text-decoration: underline; }
     }
     .features-leaf {
       position: absolute;
-      left: -40px; bottom: 40px;
-      width: 260px;
-      opacity: .08;
-      transform: rotate(-20deg) scaleX(-1);
+      left: -20px; bottom: 60px;
+      width: 140px;
+      opacity: .13;
+      transform: rotate(-15deg);
       pointer-events: none;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
     }
     .features-grid {
       display: grid;
@@ -481,12 +484,14 @@ footer a:hover { text-decoration: underline; }
       pointer-events: none;
     }
     .cta-leaves-left {
-      position: absolute; left: -40px; top: 50%; transform: translateY(-50%) rotate(-15deg);
-      width: 260px; opacity: .18; pointer-events: none;
+      position: absolute; left: 20px; top: 50%; transform: translateY(-50%) rotate(-10deg);
+      width: 160px; opacity: .22; pointer-events: none;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
     }
     .cta-leaves-right {
-      position: absolute; right: -40px; top: 50%; transform: translateY(-50%) rotate(15deg) scaleX(-1);
-      width: 240px; opacity: .15; pointer-events: none;
+      position: absolute; right: 20px; top: 50%; transform: translateY(-50%) rotate(10deg);
+      width: 140px; opacity: .2; pointer-events: none;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
     }
     .cta-section h2 {
       font-size: clamp(1.7rem, 4vw, 2.5rem);
@@ -566,7 +571,7 @@ footer a:hover { text-decoration: underline; }
 
   <!-- ══ HOW IT WORKS ══ -->
   <section class="how-section">
-    <img class="how-leaf" src="images/leaves-scatter.jpeg" alt="" />
+    <img class="how-leaf" src="images/spinach-float.svg" alt="" />
     <div class="inner">
       <div class="section-label">How it works</div>
       <h2 class="section-title">Three steps to a healthier meal</h2>
@@ -601,7 +606,7 @@ footer a:hover { text-decoration: underline; }
       <img src="images/plate-steak.jpeg" alt="Balanced plate — steak, potatoes and salad" />
     </div>
     <div class="split-text">
-      <img class="split-leaf" src="images/leaves-pair.jpeg" alt="" />
+      <img class="split-leaf" src="images/avocado.svg" alt="" />
       <h2>Your meal,<br>just a little better.</h2>
       <p>We don't tell you to swap your burger for a salad. We suggest adding a handful of spinach, a side of cherry tomatoes, or a glass of water — small, achievable changes that actually make a difference.</p>
       <a class="split-cta" href="index.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> Try it now</a>
@@ -610,7 +615,7 @@ footer a:hover { text-decoration: underline; }
 
   <!-- ══ FEATURES ══ -->
   <section class="features-section">
-    <img class="features-leaf" src="images/leaves-scatter.jpeg" alt="" />
+    <img class="features-leaf" src="images/carrot.svg" alt="" />
     <div class="inner">
       <div class="section-label">Features</div>
       <h2 class="section-title">Everything you need to eat smarter</h2>
@@ -698,8 +703,8 @@ footer a:hover { text-decoration: underline; }
 
   <!-- ══ FINAL CTA ══ -->
   <section class="cta-section">
-    <img class="cta-leaves-left"  src="images/leaves-scatter.jpeg" alt="" />
-    <img class="cta-leaves-right" src="images/leaves-scatter.jpeg" alt="" />
+    <img class="cta-leaves-left"  src="images/spinach-float.svg" alt="" />
+    <img class="cta-leaves-right" src="images/lemon.svg" alt="" />
     <div class="inner">
       <h2>Ready to eat a little better today?</h2>
       <p>It takes 30 seconds. Just describe your meal and let AI do the rest.</p>
