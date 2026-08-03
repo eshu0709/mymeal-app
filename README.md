@@ -47,6 +47,7 @@ Go to [vercel.com](https://vercel.com) and sign up with your GitHub account.
 - Add a new variable:
   - **Name:** `OPENAI_API_KEY`
   - **Value:** your OpenAI API key (`sk-proj-...`)
+  - **Details:** tikuman@gmail.com, go to myMeals project to find specific API key
   - **Environment:** Production, Preview, Development (select all)
 - Click **Save**
 
